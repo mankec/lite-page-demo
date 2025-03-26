@@ -1,0 +1,11 @@
+fields:
+  - element: "text_field"
+    attribute_name: "text_from_theme"
+    label: "Text From Theme"
+    type: "text"
+
+  - element: "image_field"
+    attribute_name: "image"
+    label: "Image"
+    type: "file"
+    accept: "image/png,image/gif,image/jpeg"

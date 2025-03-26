@@ -1,0 +1,20 @@
+<div id="theme-form">
+  <h1><%= theme.name.titleize %> Theme</h1>
+
+  <%= form_with url: create_site_path, builder: ThemeFormBuilder,  method: :post, html: { "data-turbo": false } do |f| %>
+    <%= f.label :repo_name, "Repo Name:" %>
+    <%= f.text_field :repo_name %>
+    <br>
+    <br>
+
+    <% theme.fields.each do |field| %>
+      <div>
+        <%= f.label field["label"] %>
+        <%= f.send(field["element"], "data[#{field["attribute_name"]}]", **field.except("element", "attribute_name", "label")) %>
+      </div>
+      <br>
+    <% end %>
+
+    <%= f.submit "Submit" %>
+  <% end %>
+</div>

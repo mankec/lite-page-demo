@@ -1,8 +1,9 @@
 require "net/http"
 
 class GithubRepository
-  def initialize(repo_name)
+  def initialize(repo_name, data = {})
     @repo_name = repo_name.downcase.split.join("-")
+    @data = data
   end
 
   def create
@@ -27,13 +28,15 @@ class GithubRepository
       http.request(request)
     end
 
-    Dir.mkdir("#{Dir.home}/jekyll") unless Dir.exist?("#{Dir.home}/jekyll")
+    Dir.mkdir("#{Dir.home}/jekyll") if !Dir.exist?("#{Dir.home}/jekyll") && Rails.env.development?
 
     Dir.chdir("#{Dir.home}/jekyll") do
       system("jekyll new #{@repo_name}")
 
       Dir.chdir(@repo_name) do
         update_url_and_baseurl
+        create_data_folder
+        override_minima_default
 
         system("
           git init
@@ -77,5 +80,19 @@ class GithubRepository
     config["url"] = Rails.application.credentials.gh_pages_jekyll_url
 
     File.write file_path, config.to_yaml
+  end
+
+  def create_data_folder
+    Dir.mkdir("_data")
+    file_path = "_data/data.yml"
+
+    File.write file_path, @data.to_unsafe_h.to_h.to_yaml
+  end
+
+  def override_minima_default
+    Dir.mkdir("_layouts")
+    file_path = "_layouts/default.html"
+
+    File.write file_path, File.read("#{Rails.root}/overriden_default.html")
   end
 end

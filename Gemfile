@@ -43,8 +43,6 @@ gem "thruster", require: false
 # So we can generate Jekyll's static sites
 gem "jekyll", "~> 4.4.1"
 
-gem 'lite_page_themes', '~> 0.0.0'
-
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"

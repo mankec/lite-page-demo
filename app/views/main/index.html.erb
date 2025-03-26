@@ -1,5 +1,16 @@
-<%= form_with url: create_site_path, method: :post, html: { "data-turbo": false } do |f| %>
-  <%= f.label :repo_name, "Repo Name:" %>
-  <%= f.search_field :repo_name %>
-  <%= f.submit "Create Site" %>
+
+<%= form_with url: update_form_path, method: :post do |f| %>
+  <%= label_tag :theme, "Choose Theme" %>
+  <%=
+    select_tag :theme, options_for_select([
+      [ "Green", :green ],
+      [ "Red", :red ]
+    ]),
+    onchange: "this.form.requestSubmit()"
+  %>
 <% end %>
+<br>
+<br>
+<div id="theme-form">
+  <%= render partial: "forms/theme_form", locals: { theme: Theme.new("green") } %>
+</div>
